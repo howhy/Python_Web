@@ -1,0 +1,76 @@
+{% extends 'backend/base.html' %}
+{% block content %}
+
+    <div class="modal fade modal-primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" id="my-popup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 10px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Add/Edit TimeLine</h4>
+                </div>
+                <div class="modal-body">
+{#                     action="{% url 'parter'%}" method="post"#}
+                    <form class="form-horizontal" id="my-form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                         <input type="text" name="id" style="display: none" id="my_id">
+                        <div class="form-group">
+                            <label for="content" class="col-sm-2 control-label">Content:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="text" class="form-control" id="content" name="content" placeholder="content">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="logo" class="col-sm-2 control-label">Logo:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="file" name="logo"  id="logo"/>
+                            </div>
+                        </div>
+                        <div class="form-group text-center">
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-10">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="close-modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-info" style="margin-left:5px " id="submit_data">Submit</button> <span id="result_msg" style="color: red;"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="page-title">
+            <span class="title"><span class="icon fa fa-share-alt "></span>&nbsp;TimeLine&nbsp;</span>
+            <span class="btn btn-primary btn-sm btn-success  show-modal " title="添加信息" style="border-radius: 5px"><span class="fa fa-plus" style="font-weight: 400">Add</span></span>
+            <span></span>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Content</th>
+                <th class="text-center">Logo</th>
+                <th class="text-center">CreateDate</th>
+                <th class="text-center">UpdateDate</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for obj in timelineobjs %}
+            <tr>
+                <td content="id">{{ obj.id}}</td>
+                <td content="content">{{ obj.content}}</td>
+                <td content="logo"><img src="/static/upload/{{ obj.img}}" class="img-thumbnail" style="width: 64px; height: 64px;">{{ obj.img}}</td>
+                <td content="">{{ obj.create_time|date:"Y-m-d H:i:s"}}</td>
+                <td content="">{{ obj.update_time|date:"Y-m-d H:i:s"}}</td>
+                <td class="text-center">
+                    <span class="btn btn-primary btn-xs btn-info  show-modal" title="修改信息" style="border-radius: 5px"><span class="fa fa-pencil-square-o">Edit</span></span>
+                    <span class="btn btn-primary btn-xs btn-danger " title="删除" style="border-radius: 5px"><a class="fa fa-trash-o" href="{% url 'timeline'%}?action=del&id={{ obj.id }}">Delete</a></span>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

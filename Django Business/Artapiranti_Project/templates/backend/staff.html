@@ -1,0 +1,107 @@
+{% extends 'backend/base.html' %}
+{% block content %}
+    <div class="modal fade modal-primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" id="my-popup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 10px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Add/Edit Staff</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal"  id="my-form" enctype="multipart/form-data">
+                         {% csrf_token %}
+                        <input type="text" name="id" style="display: none" id="my_id">
+                        <div class="form-group">
+                            <label for="username" class="col-sm-2 control-label">UserName:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="text" class="form-control" id="username" name="username" placeholder="UserName">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="position" class="col-sm-2 control-label">Position:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="text" name="position" class="form-control" id="position" placeholder="Position">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="age" class="col-sm-2 control-label">Age:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="text" name="age" class="form-control" id="age" placeholder="Age">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nationality" class="col-sm-2 control-label">Nationality:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="text" name="nationality" class="form-control" id="nationality" placeholder="Nationality">
+                            </div>
+                        </div>
+                                                <div class="form-group">
+                            <label for="photo" class="col-sm-2 control-label">Photo:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="file" name="photo"  id="photo" placeholder="Photo" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="nationalflag" class="col-sm-2 control-label">NationalFlag:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="file" name="nationalflag"  id="nationalflag" placeholder="NationalFlag" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-4 col-sm-10">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="close-modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-info" style="margin-left:5px " id="submit_data">Submit</button><span id="result_msg" style="color: red;"></span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="page-title">
+            <span class="title"><span class="icon fa fa-user "></span>&nbsp;Staff&nbsp;</span>
+            <span class="btn btn-primary btn-sm btn-success  show-modal " title="添加员工信息" style="border-radius: 5px"><span class="fa fa-plus">Add</span></span>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">UserName</th>
+                <th class="text-center">Position</th>
+                <th class="text-center">Age</th>
+                <th class="text-center">Nationality</th>
+                <th class="text-center">Photo</th>
+                <th class="text-center">NationalFlag</th>
+                <th class="text-center">CreateDate</th>
+                <th class="text-center">UpdateDate</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+             {% for obj in staffobjs %}
+            <tr>
+               <td content="id">{{ obj.id}}</td>
+                <td content="username">{{ obj.username}}</td>
+                <td content="position">{{ obj.position}}</td>
+                <td content="age">{{ obj.age}}</td>
+                <td content="nationality">{{ obj.nationality}}</td>
+                <td content="photo"><img src="/static/upload/{{ obj.photo}}" class="img-thumbnail" style="width: 64px; height: 64px;">{{ obj.photo}}</td>
+                <td content="nationalFlag"><img src="/static/upload/{{ obj.nationalFlag}}" class="img-thumbnail" style="width: 64px; height: 64px;">{{ obj.nationalFlag}}</td>
+                <td content="">{{ obj.create_time|date:"Y-m-d H:i:s"}}</td>
+                <td content="">{{ obj.update_time|date:"Y-m-d H:i:s"}}</td>
+                <td class="text-center">
+                    <span class="btn btn-primary btn-xs btn-info  show-modal" title="修改产品信息" style="border-radius: 5px"><span class="fa fa-pencil-square-o">Edit</span></span>
+                    <span class="btn btn-primary btn-xs btn-danger " title="删除" style="border-radius: 5px"><a class="fa fa-trash-o" href="{% url 'staff'%}?action=del&id={{ obj.id }}">Delete</a></span>
+                </td>
+            </tr>
+             {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

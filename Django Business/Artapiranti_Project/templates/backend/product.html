@@ -1,0 +1,85 @@
+{% extends 'backend/base.html' %}
+{% block content %}
+
+    <div class="modal fade modal-primary" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;" id="my-popup">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header" style="padding: 10px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">Add/Edit Product</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="title" class="col-sm-2 control-label">Title:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="description" class="col-sm-2 control-label">Description:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="text" name="description" class="form-control" id="description" placeholder="description">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="platform" class="col-sm-2 control-label">Platform:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="text" name="platform" class="form-control" id="platform" placeholder="platform">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="image" class="col-sm-2 control-label">Image:</label>
+                            <div class="col-sm-10" style="padding-left:0">
+                                <input type="file" name="image"  id="image" placeholder="image" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="close-modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-info" style="margin-left:5px ">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="page-title">
+            <span class="title"><span class="icon fa fa-cube "></span>&nbsp;Product&nbsp;</span>
+            <span class="btn btn-primary btn-sm btn-success  show-modal " title="添加产品信息" style="border-radius: 5px"><span class="fa fa-plus" style="font-weight: 400">Add</span></span>
+        </div>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="text-center">ID</th>
+                <th class="text-center">Title</th>
+                <th class="text-center">Description</th>
+                <th class="text-center">Platform</th>
+                <th class="text-center">Image</th>
+                <th class="text-center">Date</th>
+                <th class="text-center">Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td class="text-center">
+                    <span class="btn btn-primary btn-xs btn-info  show-modal" title="修改产品信息" style="border-radius: 5px"><span class="fa fa-pencil-square-o">Edit</span></span>
+                    <span class="btn btn-primary btn-xs btn-danger " title="删除" style="border-radius: 5px"><a class="fa fa-trash-o" href="/goods.html?edit=del&amp;id=3">Delete</a></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
