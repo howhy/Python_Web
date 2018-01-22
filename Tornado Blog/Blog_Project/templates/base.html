@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我的博客谁主宰</title>
+<meta name="keywords" content="Python MySQL Nginx Zabbix Apache IT Blog">
+<meta name="description" content="技术博客知识分享">
+<link rel="stylesheet" type="text/css" href="{{static_url('css/bootstrap.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{static_url('css/nprogress.css')}}">
+<link rel="stylesheet" type="text/css" href="{{static_url('css/style.css')}}">
+<link rel="stylesheet" type="text/css" href="{{static_url('css/font-awesome.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{static_url('css/prism.css')}}">
+<link rel="stylesheet" type="text/css" href="{{static_url('css/enroll_page.css')}}">
+<link rel="apple-touch-icon-precomposed" href="{{static_url('images/logo-small.png')}}">
+<link rel="shortcut icon" href="{{static_url('images/favicon.png')}}">
+<script src="{{static_url('js/jquery-2.1.4.min.js')}}"></script>
+<script src="{{static_url('js/nprogress.js')}}"></script>
+<script src="{{static_url('js/jquery.lazyload.min.js')}}"></script>
+</head>
+<body class="user-select">
+<header class="header">
+<nav class="navbar navbar-default" id="navbar">
+<div class="container">
+
+  <div class="header-topbar hidden-xs link-border">
+      {% block enroll-head %}
+	<ul class="site-nav topmenu">
+		{% if current_user %}
+		<li><a href="#" ><i class="fa fa-user" aria-hidden="true" style="color: black"></i><span style="padding: 3px">{{current_user.name.capitalize()}}</span></a></li>
+		<li><a href="/{{ current_user.name }}.html" ><i class="fa fa-globe" aria-hidden="true" style="color: black"><span style="padding: 3px"></span></i>我的博客</a></li>
+		<li><a href="/logout" rel="nofollow" ><i class="fa fa-power-off" aria-hidden="true" style="color:black"><span style="padding: 2px"></span></i>注销</a></li>
+		{% else %}
+	    <li><a href="/login" >登录</a></li>
+		<li><a href="/enroll" >注册</a></li>
+		{% end %}
+	</ul>
+	知识改变命运 技术改变世界
+      {% end %}
+  </div>
+     {% block header-top %}
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false"> <span class="sr-only"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+	<h1 class="logo hvr-bounce-in"><a href="/index/index.html" title="博客"><img src="{{static_url('images/index-logo.png')}}" alt="博客"></a></h1>
+  </div>
+  <div class="collapse navbar-collapse" id="header-navbar">
+	<ul class="nav navbar-nav navbar-right">
+	  <li><a data-cont="博客" title="首页" href="/index/index.html">首页</a></li>
+         {% for category in category_objs %}
+			<li><a href="/index/{{ category.urlname }}.html" title="{{ category.name }}" >{{ category.name }}</a></li>
+        {% end %}
+	</ul>
+  </div>
+    {% end%}
+</div>
+</nav>
+</header>
+{% block backend %}
+<section class="container">
+ {% block page_content %}
+ {% end %}
+{% block enroll-page %}
+<aside class="sidebar">
+<div class="fixed">
+    {% block page-right %}
+<div class="widget widget-tabs">
+	<ul class="nav nav-tabs" role="tablist">
+		 <li role="presentation" class="active"><a href="#notice" aria-controls="notice" role="tab" data-toggle="tab" >博客信息</a></li>
+	     <li role="presentation"><a href="#contact" aria-controls="contact" role="tab" data-toggle="tab" >管理员</a></li>
+	</ul>
+	<div class="tab-content">
+	  <div role="tabpanel" class="tab-pane contact active" id="notice">
+		<ul class="plinks ptags">
+            {% for category in category_count %}
+            {% for categoryobj in category_objs %}
+              {% if category[1]==categoryobj.id %}
+			<li><a href="/index/{{ categoryobj.urlname }}.html" title="{{ categoryobj.name}}" draggable="false" >{{ categoryobj.name}}<span class="badge">{{ category[0] }}</span></a></li>
+            {% end %}
+            {% end %}
+            {% end %}
+		</ul>
+	  </div>
+		<div role="tabpanel" class="tab-pane contact" id="contact">
+		  <h2>QQ:407567393<a href="" target="_blank" rel="nofollow" data-toggle="tooltip" data-placement="bottom" title=""  data-original-title="QQ:"></a></h2>
+		  <h2>Email:407567393@qq.com<a href="#" target="_blank" data-toggle="tooltip" rel="nofollow" data-placement="bottom" title=""  data-original-title="#"></a></h2>
+	  </div>
+	</div>
+ </div>
+<div class="widget widget_search">
+	<form class="navbar-form" action="/index/search.html" method="get">
+	  <div class="input-group">
+		<input type="text" name="keyword" class="form-control" id="search-keyword" size="35" placeholder="请输入关键字" maxlength="15" autocomplete="off">
+		<span class="input-group-btn"><button class="btn btn-default btn-search" id="btn-search" type="submit">搜索</button></span>
+	  </div>
+	</form>
+ </div>
+</div>
+<div class="widget widget_sentence">
+    <a href="/index/index.html"  rel="nofollow" title="欢迎访问本站点" >
+	<img class="img-responsive center-block" src="{{static_url('images/erweima.png')}}" alt="欢迎访问本站点" ></a>
+</div>
+     {% end %}
+<div class="widget widget_hot">
+	  <h3>最新评论文章</h3>
+	  <ul>
+		  {%for comment_art in comment_article%}
+			<li><a title="{{comment_art.title}}" href="/{{ comment_art.user.name }}/{{comment_art.id}}.html" >
+			<span class="thumbnail"><img class="thumb" data-original="{{static_url(comment_art.image)}}" src="{{static_url(comment_art.image)}}" alt="{{comment_art.title}}"  style="display: block;"></span>
+			<span class="text">{{comment_art.title}}</span><span class="muted" style="margin-right: 10px"><i class="fa fa-clock-o"></i>{{comment_art.date}}</span>
+			<span class="muted"><i class="fa fa-comments"></i>{{ len(comment_art.comment) }}</span>
+			</a></li>
+         {%end%}
+	  </ul>
+ </div>
+<div class="widget widget_sentence">
+  <h3>友情链接</h3>
+  <div class="widget-sentence-link">
+	  <a href="https://www.aliyun.com" title="阿里云" target="_blank" >阿里云</a>&nbsp;&nbsp;
+	  <a href="https://www.zol.com.cn" title="中关村" target="_blank" >中关村</a>&nbsp;&nbsp;
+	  <a href="https://www.cnblogs.com" title="博客园" target="_blank" >博客园</a>&nbsp;&nbsp;
+	  <a href="http://www.51cto.com" title="51CTO" target="_blank" >51CTO</a>&nbsp;&nbsp;
+  </div>
+
+</div>
+</aside>
+</section>
+{% end %}
+
+<footer class="footer">
+<div class="container">
+<p><span>博客版权所有-京ICP备10046444-<a class="beian-record-link" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11010802020134"><span><img src="https://account.xiaomi.com/static/res/9204d06/account-static/respassport/acc-2014/img/ghs.png"></span>京公网安备11010802020134号</a>-京ICP证110507号</span></p>
+</div>
+<div id="gotop"><a class="gotop"></a></div>
+</footer>
+{% end %}
+<script src="{{static_url('js/bootstrap.min.js')}}"></script>
+<script src="{{static_url('js/scripts.js')}}"></script>
+{% block js%}
+{% end %}
+</body>
+</html>

@@ -1,0 +1,30 @@
+linux下使用free命令查看实际内存占用（可用内存）
+
+
+ 
+
+linux下在终端环境下可以使用free命令看到系统实际使用内存的情况，一般用free -m方式查看内存占用情况（兆为单位）。而系统实际可用内存是不是free部分呢，不是的，系统实际内存占用以及可用内存有如下几个加减法：
+
+used=total-free 即 total=used+free
+实际内存占用：used-buffers-cached 即 total-free-buffers-cached
+实际可用内存：buffers+cached+free
+                   total       used       free     shared    buffers     cached
+Mem:            128        119           8          0            1               22
+-/+ buffers/cache:        95          32
+swap:          255            0         255
+
+ 
+
+第1行Mem数据：
+
+total 内存总数: 128
+used 已经使用的内存数: 119
+free 空闲的内存数: 8
+shared 当前已经废弃不用，总是0
+buffers Buffer Cache内存数: 1
+cached Page Cache内存数: 22
+第2行-/+ buffers/cache：
+
+-buffers/cache 的内存数：95 (等于第1行的 used - buffers - cached)
++buffers/cache 的内存数: 32 (等于第1行的 free + buffers + cached)
+可见-buffers/cache反映的是被程序实实在在吃掉的内存，而+buffers/cache反映的是可以挪用的内存总数。

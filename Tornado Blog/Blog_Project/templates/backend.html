@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>博客后台管理</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="shortcut icon" href="{{static_url('images/favicon.png')}}">
+    <link href="{{ static_url('css/bootstrap.min.css') }}" rel="stylesheet" />
+    <link href="{{ static_url('css/font-awesome.min.css') }}" rel="stylesheet" />
+    <link href="{{ static_url('css/custom-styles.css') }}" rel="stylesheet" />
+    <link href="{{ static_url('css/style.css') }}" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/index/index.html"><span class="fa fa-2x fa-globe"></span><strong>勤记录 乐分享</strong></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+          <ul class="nav navbar-nav navbar-right">
+                <li><a href="/index/index.html" ><span class="fa fa-home" aria-hidden="true">博客园</span></a></li>
+                <li><a href="/{{ current_user.name }}.html" ><span class="fa fa-globe" aria-hidden="true">我的博客</span></a></li>
+                <li><a href="/{{ current_user.name }}.html"  ><span class="fa fa-user" aria-hidden="true">{{ current_user.name }}</span></a></li>
+                <li style="padding-right: 20px"><a href="/logout" ><span class="fa fa-sign-out" aria-hidden="true">注销</span></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+        <nav class="navbar-default navbar-side" role="navigation">
+		<div id="sideNav" href=""><i class="fa fa-caret-right"></i></div>
+            <div class="sidebar-collapse">
+                <ul class="nav" id="main-menu">
+                    <li>
+                        <a class="active-menu" href="index.html"><i class="fa fa-dashboard"></i> Dashboard</a>
+                    </li>
+                    <li  {% if 'article' in request.uri %} class='active' {%end%}>
+                        <a href="#"><i class="fa fa-book"></i>文章管理<span class="fa arrow"></span></a>
+                           <ul class="nav nav-second-level">
+                            <li><a href="/backend/article.html"><i class="fa fa-list-ol"></i>文章列表</a></li>
+                            <li><a href="/backendedit/article.html"><i class="fa fa-edit"></i>文章编辑</a></li>
+                           </ul>
+                    </li>
+                    <li {% if 'lognote' in request.uri %} class='active' style="background: none!important;" {%end%}>
+                        <a href="#"><i class="fa fa-files-o"></i>日志管理<span class="fa arrow"></span></a>
+                           <ul class="nav nav-second-level">
+                            <li><a href="/backend/lognote.html"><i class="fa fa-list-ol"></i>日志列表</a></li>
+                            <li><a href="/backendedit/lognote.html"><i class="fa fa-edit"></i>日志编辑</a></li>
+                           </ul>
+                    </li>
+                    <li {% if 'weblink' in request.uri %} class='active' {%end%}>
+                        <a href="#"><i class="fa fa-link"></i>web链接管理<span class="fa arrow"></span></a>
+                           <ul class="nav nav-second-level">
+                            <li><a href="/backend/weblink.html"><i class="fa fa-list-ol"></i>Web链接列表</a></li>
+                            <li><a href="/backendedit/weblink.html"><i class="fa fa-edit"></i>Web链接编辑</a></li>
+                           </ul>
+                    </li>
+                     <li {% if 'uploadfile' in request.uri %} class='active' {%end%}>
+                        <a href="#"><i class="fa fa-upload"></i>文件管理<span class="fa arrow"></span></a>
+                           <ul class="nav nav-second-level">
+                            <li><a href="/backend/uploadfile.html"><i class="fa fa-upload"></i>文件列表</a></li>
+                           </ul>
+                    </li>
+					<li>
+                        <a href="chart.html"><i class="fa fa-gear"></i>设置<span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#"><i class="fa fa-user"></i>个人设置</a></li>
+                            <!-- <li><a href="#"><i class="fa fa-file-text"></i></a></li> -->
+                         </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper">
+            <div id="page-inner">
+                {% block backent_conten %}
+                <div class="row">
+                    <div class="col-md-4">
+                        <h1 class="page-header">
+                            Dashboard <small>Summary of your blog</small>
+                        </h1>
+                    </div>
+                </div>
+                <!-- /. ROW  -->
+                <div class="row">
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder bg-color-blue blue">
+                              <div class="panel-left pull-left blue">
+                                <i class="fa fa-book fa-3x"></i>
+								</div>
+                            <div class="panel-right pull-right">
+							<h3>{{ article_num }}</h3>
+                               <strong> 文章</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder bg-color-red red">
+                              <div class="panel-left pull-left red">
+                                <i class="fa fa-file fa-3x"></i>
+								</div>
+                            <div class="panel-right pull-right">
+							<h3>{{ lognote_num }} </h3>
+                               <strong> 日志</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder bg-color-green green">
+                            <div class="panel-left pull-left green">
+                                <i class="fa fa fa-comments fa-3x"></i>
+                            </div>
+                            <div class="panel-right pull-right">
+							 <h3>{{ comment_num }}</h3>
+                               <strong> 评论 </strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-primary text-center no-boder bg-color-brown brown">
+                            <div class="panel-left pull-left brown">
+                                <i class="fa fa-eye fa-3x"></i>
+                            </div>
+                            <div class="panel-right pull-right">
+							<h3> 0</h3>
+                             <strong>浏览</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% end %}
+        </div>
+    </div>
+
+    <script src="{{ static_url('js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+    <script src="{{ static_url('js/jquery.metisMenu.js') }}"></script>
+{% block js %}
+{% end %}
+</body>
+</html>

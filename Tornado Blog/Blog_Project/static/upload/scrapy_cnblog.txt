@@ -1,0 +1,26 @@
+# _*_ coding:utf-8 _*_
+import requests
+import re
+from bs4 import BeautifulSoup
+#url="http://www.cnblogs.com/kevingrace/default.html?page=1"
+url="http://www.cnblogs.com/kevingrace/p/7211556.html"
+header = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.133 Safari/537.36"}
+
+def get_content(suburl):
+    req = requests.get(suburl, headers=header, timeout=60)
+    subhtm = req.content.decode('utf-8')
+    soup=BeautifulSoup(subhtm,'html.parser')
+    content=soup.find(id="cnblogs_post_body").get_text()
+    # reg = '<a id="homepage1_HomePageDays_DaysList.+?" class="postTitle2" href="(.+?)">(.+?)</a>'
+    # content = re.findall(reg, subhtm)
+    return content
+
+def get_html(url):
+    req = requests.get(url, headers=header, timeout=60)
+    htm = req.content.decode('utf-8').replace('>\r\n','>')
+    reg='<a id="homepage1_HomePageDays_DaysList.+?" class="postTitle2" href="(.+?)">(.+?)</a>'
+    alist = re.findall(reg, htm)
+    return alist
+
+if __name__=='__main__':
+    print get_content(url)

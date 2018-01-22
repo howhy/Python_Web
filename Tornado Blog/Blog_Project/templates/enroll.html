@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block enroll-head %}
+{% end %}
+{% block header-top %}
+ <div class="navbar-header">
+	<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false"> <span class="sr-only"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+	<h1 class="logo hvr-bounce-in" style="line-height: 90px"><a href="/index.html" title="博客"><img src="{{static_url('images/index-logo.png')}}" alt="博客"></a></h1>
+  </div>
+  <div class="collapse navbar-collapse" id="header-navbar">
+	<ul class="nav navbar-nav navbar-right" style="margin-top: 30px">
+	  <li><a data-cont="首页" title="首页" href="/index/index.html"><span class="fa fa-home" aria-hidden="true"><span class="reg_span">首页</span></span></a></li>
+	  <li><a data-cont="登入" title="登入" href="/login"><span class="fa fa-user" aria-hidden="true"><span class="reg_span">登入</span></span></a></li>
+	  <li><a data-cont="注册" title="注册" href="/enroll"><span class="fa fa-plus" aria-hidden="true"><span class="reg_span">注册</span></span></a></li>
+      <li><a data-cont="帮助" title="帮助" href="/help"><span class="fa fa-question" aria-hidden="true"><span class="reg_span">帮助</span></span></a></li>
+	</ul>
+  </div>
+{% end %}
+ {% block page_content %}
+<div class="content-wrap" style="min-height:900px!important;">
+<div class="content" style="margin-right:0!important;">
+ <div class="reg_body">
+     <div class="reg_body_title" >用户注册</div><hr>
+     <div class="reg_form">
+        <form method="post" action="/enroll" id="reg_form"  role="form">
+            {% module xsrf_form_html() %}
+            <div class='reg_input' ><label for="username" style="padding-right:25px">用户名:</label><input type="text" id="username" name="username" placeholder="用户名 至少6个字符" required="required"/>{%if errinfo %}<span class="error">{{errinfo}}</span>{%end%}</div>
+            <div class='reg_input'><label for="password" style="padding-right:35px">密 码:</label><input type="password" id="password" name="password" placeholder="密码 至少6个字符" required="required"/></div>
+            <div class='reg_input'><label for="confirmpassword" style="padding-right:10px">确认密码:</label><input type="password" id="confirmpassword" name="confirmpassword" placeholder="密码 至少6个字符" required="required"/></div>
+            <div class='reg_input'><label for="email" style="padding-right:35px">邮 箱:</label><input type="email" id="email" name="email" placeholder="邮箱 请注意邮箱格式" required="required"/></div>
+            <div class="reg_btn"><input type="submit" value="注册" class="btn btn-primary" id="reg_btn"/></div>
+        </form>
+     </div>
+    </div>
+    </div>
+    </div>
+ {% end %}
+{% block enroll-page %}
+ {% end %}
+{% block js %}
+<script type="text/javascript">
+  $(function(){
+            function addtag(ths,val){
+                 var tag = document.createElement('span');
+				 tag.className = "error";
+				 tag.innerHTML = val;
+				 $(ths).after(tag);
+			}
+            $(':submit').click(function () {
+                $('.error').remove();
+                $('.fa-asterisk').remove();
+                var flag = true;
+                $('#reg_form').find('input[type="text"],input[type="password"]').each(function () {
+                    var v = $(this).val();
+					var len=v.length ;
+                    var reg=/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,}$/;
+                    if(len < 6 || ! reg.test(v)){
+                        flag = false;
+						addtag(this,"*至少包含6个字母和数字组合*");
+                    }
+                    return flag;
+                });
+                if (flag){
+                    if( $('#password').val()!=$('#confirmpassword').val()){
+                            flag=false;
+                            addtag('#confirmpassword',"*两次密码不一样*");
+                        }
+                    var emailPatten = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+				    if(!emailPatten.test($('#email').val())){
+				    flag=false;
+					addtag('#email',"*邮箱格式不对*")
+                    }
+                 }
+                return flag;
+        });
+        });
+</script>
+{% end %}

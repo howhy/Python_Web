@@ -1,0 +1,44 @@
+
+    .reg_span {
+        padding: 5px;
+    }
+	.collapse ul li span{
+		color: #3399CC;
+	}
+    .reg_body{
+        margin: 100px auto;
+        height: 600px;
+        width: 600px
+    }
+    .reg_body_title{
+        margin-left: 10px;
+        font-size: x-large;
+        font-weight: 600
+    }
+    .reg_form{
+        margin-left: 10px;
+    }
+    .reg_input{
+        padding: 10px;
+    }
+    .reg_input input{
+        width: 45%;
+    }
+    .reg_btn{
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 20px;
+    }
+    .error{
+        color: red;
+        padding-left: 3px;
+        font-size:xx-small;
+    }
+	.footer{
+		margin:0 auto;
+		text-align: center;
+	}
+    .title-size{
+        font-size: 20px!important;
+        color: #3399cc!important;
+    }

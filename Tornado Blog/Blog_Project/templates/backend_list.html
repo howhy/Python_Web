@@ -1,0 +1,171 @@
+{% extends 'backend.html' %}
+{% block backent_conten %}
+<div class="row">
+    <div class="col-md-3">
+        <h1 class="page-header ">
+          {% if 'article' in request.uri %}
+           <span class="fa fa-files-o"><small style="padding: 3px" class="info">文章列表</small></span>
+          {% elif 'lognote' in request.uri %}
+           <span class="fa fa-file-text"><small style="padding: 3px" class="info">日志列表</small></span> 
+          {% elif 'weblink' in request.uri %}
+           <span class="fa fa-chain"><small style="padding: 3px" class="info">链接列表</small></span>
+           {% elif 'uploadfile' in request.uri %}
+           <span class="fa fa-download"><small style="padding: 3px" class="info">上传下载文件</small></span> 
+          {%end%}    
+        </h1>
+    </div>
+</div>
+<div class="panel panel-primary">
+ {% if  'uploadfile' in request.uri  %}
+     <div class="panel-heading">
+        上传文件
+    </div>
+    <div class="panel-body">
+        <div class='form-group'>
+            <input  type='file' name='fileinput' id='fileinput' style='margin:15px'/>
+            <input class='btn btn-primary' id='uploadbtn' style='margin:10px' type='submit' value='提交'><span style="color: red" id="ret">{{ msg }}</span>
+            <div style='color:red;font-size:small;'><span >单个文件大小须小于2M 允许上传文件类型:.txt .ppt .pptx .xls .xlsx .doc .docx .xml .conf .pdf .zip .rar .tar .gz .7z .jpg .jpep .png .gif  .bmp .ico .css</span></span>
+        </div>
+    </div>
+    </div>
+  {% end %}
+  <table class="table">
+      {% if  'article' in request.uri  %}
+      <thead>
+        <tr>
+          <th>标 题</th>
+          <th>评论数</th>
+          <th>阅读数</th>
+          <th>发布日期</th>
+          <th>操 作</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for article in articleobjs %}
+        <tr>
+          <td><a href="/{{ current_user.name }}/{{ article.id }}.html">{{ article.title }}</a></td>
+          <td>{{ len(article.comment)}}</td>
+          <td>{{ article.page_views }}</td>
+           <td>{{ article.date }}</td>
+          <td><a class="btn btn-xs btn-primary" href="/backendedit/article.html?editid={{ article.id }}"><i class="fa fa-edit"></i>编辑</a><a class="btn btn-xs btn-danger" href="/backend/delarticle.html?delid={{ article.id }}"><i class="fa fa-trash-o"></i>删除</a></td>
+        </tr>
+      {% end %}
+      </tbody>
+      {% end %}
+  {% if  'lognote' in request.uri  %}
+   <thead>
+    <tr>
+      <th>标 题</th>
+      <th>评论数</th>
+      <th>阅读数</th>
+      <th>发布日期</th>
+      <th>操 作</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for lognote in articleobjs%}
+    <tr>
+      <td><a href="/{{ current_user.name }}/{{ lognote.id }}.html">{{ lognote.title }}</a></td>
+      <td>0</td>
+      <td>0</td>
+       <td>{{ lognote.date }}</td>
+      <td><a class="btn btn-xs btn-primary" href="/backendedit/lognote.html?editid={{ lognote.id }}"><i class="fa fa-edit"></i>编辑</a><a class="btn btn-xs btn-danger" href="/backend/dellognote.html?delid={{ lognote.id }}"><i class="fa fa-trash-o"></i>删除</a></td>
+    </tr>
+  {% end %}
+  </tbody>
+  {% end %}
+  {% if  'weblink' in request.uri  %}
+    <thead>
+        <tr>
+          <th>标 题</th>
+          <th>网址</th>
+          <th>描述</th>
+          <th>操 作</th>
+        </tr>
+      </thead>
+     <tbody>
+      {% for weblink in articleobjs %}
+        <tr>
+          <td><a href="{{ weblink.weburl }}" target="_blank">{{ weblink.title }}</a></td>
+          <td><a href="{{ weblink.weburl }}" target='_blank'>{{ weblink.weburl }}</a></td>
+           <td>{{ weblink.description }}</td>
+          <td><a class="btn btn-xs btn-primary" href="/backendedit/weblink.html?editid={{ weblink.id }}"><i class="fa fa-edit"></i>编辑</a><a class="btn btn-xs btn-danger" href="/backend/delweblink.html?delid={{ weblink.id }}"><i class="fa fa-trash-o"></i>删除</a></td>
+        </tr>
+      {% end %}
+      </tbody>
+   {% end %}
+  {% if  'uploadfile' in request.uri  %}
+      <thead>
+                <tr>
+                  <th>文件名</th>
+                  <th>大小</th>
+                    <th>类型</th>
+                  <th>hash值</th>
+                  <th>上传日期</th>
+                  <th>操 作</th>
+                </tr>
+              </thead>
+      <tbody>
+              {% for file in articleobjs %}
+                <tr>
+                  <td>{{ file.filename }}</td>
+                  <td>{{ file.filesize/100}}KB</td>
+                    <td>{{ file.file_type }}</td>
+                  <td>{{ file.file_hash }}</td>
+                   <td>{{ file.date }}</td>
+                  <td><a class="btn btn-xs btn-primary" href="/downloadfile?id={{ file.id }}"><i class="fa fa-download"></i>下载</a></td>
+                </tr>
+              {% end %}
+              </tbody>
+  {% end %}
+  </table>
+  <nav class="pagination" style="">
+    <ul>{% raw pagination %}</ul>
+  </nav>
+</div>
+{% end %}
+{% block js %}
+<script type="text/javascript">
+
+ $(function () {
+     function utils_getCookie(objname){
+        var arrstr = document.cookie.split("; ");
+        for(var i = 0;i < arrstr.length;i ++){
+        var temp = arrstr[i].split("=");
+        if(temp[0] == objname){
+            return temp[1];
+        	}
+    	}
+	}
+     $('#uploadbtn').click(function () {
+         var file_obj=document.getElementById('fileinput').files[0];
+         if (typeof(file_obj) == "undefined")
+             {
+                $('#ret').text('请先选择要上传的文件')
+                 return false;
+             }
+         var fd=new FormData();
+         fd.append('fileinput',file_obj);
+         $.ajax({
+             url:'/uploadfile',
+             type:'post',
+             data:fd,
+             headers:{
+                 "X-XSRFTOKEN":utils_getCookie("_xsrf"),
+             },
+             processData: false,
+             contentType: false,
+             success:function (ret) {
+                 if(ret.error=='0'){
+                     $('#ret').text(ret.message)
+                     location.reload();
+                 }
+                 else{
+                     $('#ret').text(ret.message)
+                 }
+             }
+         })
+     })
+ })
+</script>
+{% end %}
